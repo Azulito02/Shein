@@ -208,10 +208,11 @@ export default function Facturacion() {
       const chartData = facturasData.map((factura) => ({
         name: factura.cliente,
         cantidad: parseFloat(factura.monto),
-        color: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
+        color: `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`, // Asegura que el color tenga 6 caracteres
         legendFontColor: "#7F7F7F",
         legendFontSize: 15,
       }));
+      
 
       setChartData(chartData);
     } catch (error) {
