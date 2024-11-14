@@ -248,7 +248,8 @@ export default function Facturacion() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Facturación</Text>
+      <Text style={styles.title}>A las 7 cierro pedido
+      </Text>
       <FlatList
         data={facturas}
         renderItem={renderFactura}
