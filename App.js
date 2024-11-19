@@ -65,7 +65,42 @@ export default function Facturacion() {
     setModalVisible(false);
   };
 
+  const validarFormulario = () => {
+    if (!cliente.trim()) {
+      Alert.alert('Todos los campos son obligatorios', 'El campo Cliente es obligatorio.');
+      return false;
+    }
+  
+    // Validar formato de fecha (yyyy-mm-dd)
+    const fechaRegex = /^\d{4}-\d{2}-\d{2}$/;
+    if (!fechaRegex.test(fecha)) {
+      Alert.alert('Todos los campos son obligatorios', 'La fecha debe tener el formato YYYY-MM-DD.');
+      return false;
+    }
+  
+    // Validar monto
+    if (!monto || isNaN(monto) || parseFloat(monto) <= 0) {
+      Alert.alert('Todos los campos son obligatorios', 'El monto debe ser un número mayor a 0.');
+      return false;
+    }
+  
+    if (!estado.trim()) {
+      Alert.alert('Todos los campos son obligatorios', 'El campo Estado es obligatorio.');
+      return false;
+    }
+  
+    // Validar que la imagen sea obligatoria
+    if (!imagen) {
+      Alert.alert('Todos los campos son obligatorios', 'Debes seleccionar una imagen.');
+      return false;
+    }
+  
+    return true;
+  };
+  
   const agregarFactura = async () => {
+    if (!validarFormulario()) return;
+  
     setIsLoading(true);
     try {
       await addDoc(collection(db, 'facturas'), {
@@ -84,25 +119,10 @@ export default function Facturacion() {
       setIsLoading(false);
     }
   };
-
-  const pickImage = async () => {
-    try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        quality: 1,
-      });
-
-      if (!result.canceled) {
-        const uri = result.assets[0].uri;
-        setImagen(uri);
-      }
-    } catch (error) {
-      console.error("Error al seleccionar la imagen:", error);
-    }
-  };
-
+  
   const actualizarFactura = async () => {
+    if (!validarFormulario()) return;
+  
     if (!selectedFactura) return;
     setIsLoading(true);
     try {
@@ -123,6 +143,7 @@ export default function Facturacion() {
       setIsLoading(false);
     }
   };
+  
 
   const confirmarEliminacion = (facturaId) => {
     Alert.alert(
@@ -146,6 +167,23 @@ export default function Facturacion() {
       Alert.alert('Error', 'No se pudo eliminar la factura');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const pickImage = async () => {
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        quality: 1,
+      });
+
+      if (!result.canceled) {
+        const uri = result.assets[0].uri;
+        setImagen(uri);
+      }
+    } catch (error) {
+      console.error("Error al seleccionar la imagen:", error);
     }
   };
 
@@ -243,7 +281,7 @@ export default function Facturacion() {
     } catch (error) {
       console.error("Error al generar el PDF del gráfico:", error);
       Alert.alert("Error", "No se pudo generar el PDF del gráfico.");
-    }
+    } 
   };
 
   return (
