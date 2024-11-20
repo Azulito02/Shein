@@ -71,14 +71,14 @@ export default function Facturacion() {
       return false;
     }
   
-    // Validar formato de fecha (yyyy-mm-dd)
+    
     const fechaRegex = /^\d{4}-\d{2}-\d{2}$/;
     if (!fechaRegex.test(fecha)) {
-      Alert.alert('Todos los campos son obligatorios', 'La fecha debe tener el formato YYYY-MM-DD.');
+      Alert.alert('Todos los campos son obligatorios', 'La fecha debe tener el formato adecuado.');
       return false;
     }
   
-    // Validar monto
+    
     if (!monto || isNaN(monto) || parseFloat(monto) <= 0) {
       Alert.alert('Todos los campos son obligatorios', 'El monto debe ser un número mayor a 0.');
       return false;
@@ -89,7 +89,7 @@ export default function Facturacion() {
       return false;
     }
   
-    // Validar que la imagen sea obligatoria
+    
     if (!imagen) {
       Alert.alert('Todos los campos son obligatorios', 'Debes seleccionar una imagen.');
       return false;
@@ -213,7 +213,7 @@ export default function Facturacion() {
     <View style={styles.facturaItem}>
       <Text style={styles.facturaText}>Cliente: {item.cliente}</Text>
       <Text style={styles.facturaText}>Fecha: {item.fecha}</Text>
-      <Text style={styles.facturaText}>Monto: ${item.monto}</Text>
+      <Text style={styles.facturaText}>Monto: C${item.monto}</Text>
       <Text style={styles.facturaText}>Estado: {item.estado}</Text>
       {item.imagen ? (
         <Image source={{ uri: item.imagen }} style={styles.facturaImage} />
@@ -246,7 +246,7 @@ export default function Facturacion() {
       const chartData = facturasData.map((factura) => ({
         name: factura.cliente,
         cantidad: parseFloat(factura.monto),
-        color: `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`, // Asegura que el color tenga 6 caracteres
+        color: `#${Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')}`, 
         legendFontColor: "#7F7F7F",
         legendFontSize: 15,
       }));
